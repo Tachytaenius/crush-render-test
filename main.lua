@@ -1,7 +1,7 @@
 local pos, angle, fullCanvas, crushShader
 local fullViewDistance, crushStart, crushEnd = 256, 64, 128 -- Crush everything from falloffStart to viewDistance into falloffStart to falloffEnd
 
-local crushCentreX, crushCentreY, showStartCircle
+local crushCentreX, crushCentreY, showStartCircle, offsetX, offsetY
 
 local img = love.graphics.newImage("render.png")
 img:setWrap("clampzero")
@@ -11,6 +11,7 @@ function love.load()
 	crushShader = love.graphics.newShader("shaders/crush.glsl")
 	fullCanvas:setWrap("clampzero")
 	crushCentreX, crushCentreY = fullViewDistance, fullViewDistance
+	offsetX, offsetY = 0, 0
 	showStartCircle = false
 end
 
@@ -38,6 +39,18 @@ function love.update(dt)
 	if love.keyboard.isDown("s") then
 		crushCentreY = crushCentreY + movementThisFrame
 	end
+	if love.keyboard.isDown("left") then
+		offsetX = offsetX - movementThisFrame
+	end
+	if love.keyboard.isDown("right") then
+		offsetX = offsetX + movementThisFrame
+	end
+	if love.keyboard.isDown("up") then
+		offsetY = offsetY - movementThisFrame
+	end
+	if love.keyboard.isDown("down") then
+		offsetY = offsetY + movementThisFrame
+	end
 end
 
 function love.draw()
@@ -52,6 +65,7 @@ function love.draw()
 	crushShader:send("crushStart", crushStart)
 	crushShader:send("power", power)
 	crushShader:send("showStartCircle", showStartCircle)
+	crushShader:send("offset", {offsetX, offsetY})
 	love.graphics.draw(fullCanvas)
 	love.graphics.setShader()
 	love.graphics.print("WASD, shift to move faster, space to\ntoggle crush start circle drawn")

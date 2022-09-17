@@ -3,10 +3,12 @@ uniform vec2 outputCanvasSize;
 uniform vec2 crushCentre;
 uniform float crushStart;
 uniform float power;
+uniform vec2 offset;
 
 uniform bool showStartCircle;
 
 vec4 sampleInputCanvas(sampler2D texture, vec2 fragmentPosition) {
+	fragmentPosition = fragmentPosition + crushCentre - inputCanvasSize / 2.0 + offset;
 	vec2 crushCentreToPosition = fragmentPosition - crushCentre;
 	float fragmentDistance = length(crushCentreToPosition);
 	if (showStartCircle && abs(fragmentDistance - crushStart) < 0.5) {
