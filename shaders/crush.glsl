@@ -14,7 +14,6 @@ vec4 sampleInputCanvas(sampler2D texture, vec2 fragmentPosition) {
 	}
 	float crushedDistance = max(fragmentDistance, crushStart * pow(fragmentDistance / crushStart, power));
 	vec2 crushedFragmentPosition = crushCentre + crushedDistance * normalize(crushCentreToPosition);
-	crushedFragmentPosition = crushedFragmentPosition + crushCentre - inputCanvasSize / 2.0; // Should this line be there?????? What's correct?? What am I even looking for??
 	return Texel(texture, crushedFragmentPosition / inputCanvasSize);
 }
 
